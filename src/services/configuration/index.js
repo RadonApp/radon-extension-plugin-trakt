@@ -1,15 +1,15 @@
-import OptionsService from 'eon.extension.framework/base/services/source/activity';
+import ConfigurationService from 'eon.extension.framework/services/configuration';
 import Registry from 'eon.extension.framework/core/registry';
 
 import Plugin from '../../core/plugin';
 import Options from './options';
 
 
-export class TraktOptionsService extends OptionsService {
+export class TraktConfigurationService extends ConfigurationService {
     constructor() {
         super(Plugin, Options);
     }
 }
 
 // Register service
-Registry.registerService(new TraktOptionsService());
+Registry.registerService(new TraktConfigurationService());

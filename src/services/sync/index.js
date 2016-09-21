@@ -1,4 +1,4 @@
-import SyncService from 'eon.extension.framework/base/services/destination/sync';
+import SyncService from 'eon.extension.framework/services/destination/sync';
 import Registry from 'eon.extension.framework/core/registry';
 
 import Plugin from '../../core/plugin';

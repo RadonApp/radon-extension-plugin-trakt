@@ -1,4 +1,4 @@
-import ScrobbleService from 'eon.extension.framework/base/services/destination/scrobble';
+import ScrobbleService from 'eon.extension.framework/services/destination/scrobble';
 import Registry from 'eon.extension.framework/core/registry';
 
 import Plugin from '../../core/plugin';
