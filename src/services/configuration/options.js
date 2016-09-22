@@ -1,16 +1,14 @@
-export default {
-    enabled: {type: 'enable', label: 'Enabled'},
+import {
+    CheckboxOption,
+    EnableOption,
+    Group
+} from 'eon.extension.framework/services/configuration/models';
 
-    scrobble: {
-        enabled: {type: 'enable', label: 'Enabled'},
+import Plugin from '../../core/plugin';
 
-        position: {type: 'slider', label: 'Scrobble position'},
-        retry: {type: 'checkbox', label: 'Retry failed scrobbles'},
-    },
 
-    sync: {
-        enabled: {type: 'enable', label: 'Enabled'},
-
-        loved: {type: 'checkbox', label: 'Synchronize loved tracks'}
-    }
-};
+export default [
+    new EnableOption(Plugin, 'enabled', 'Enabled', {
+        default: false
+    })
+];
