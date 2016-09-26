@@ -148,7 +148,7 @@ export default class TraktAuthenticationComponent extends OptionComponent {
             var user = this.state.account.user;
 
             return (
-                <div data-plugin={Plugin.id} className="authentication authentication-active" style={{
+                <div data-component={Plugin.id + ':authentication'} className="box active" style={{
                     backgroundImage: 'url(' + account.cover_image + ')'
                 }}>
                     <div className="shadow"></div>
@@ -159,7 +159,7 @@ export default class TraktAuthenticationComponent extends OptionComponent {
                         }}/>
 
                         <div className="content">
-                            <h3 className="title">{user.name}</h3>
+                            <h3 className="title">{user.name || user.username}</h3>
 
                             <div className="actions">
                                 <button type="button" className="button secondary small" onClick={this.refresh.bind(this)}>
@@ -178,7 +178,7 @@ export default class TraktAuthenticationComponent extends OptionComponent {
 
         // Logged out
         return (
-            <div data-plugin={Plugin.id} className="authentication authentication-login">
+            <div data-component={Plugin.id + ':authentication'} className="box login">
                 <div className="inner">
                     <button type="button" className="button small" onClick={this.onLoginClicked.bind(this)}>
                         Login
