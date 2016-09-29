@@ -9,7 +9,7 @@ import Plugin from '../../../core/plugin';
 import './authentication.scss';
 
 
-export default class TraktAuthenticationComponent extends OptionComponent {
+export default class AuthenticationComponent extends OptionComponent {
     constructor() {
         super();
 

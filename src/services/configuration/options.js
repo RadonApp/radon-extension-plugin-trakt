@@ -4,7 +4,7 @@ import {
     Group
 } from 'eon.extension.framework/services/configuration/models';
 
-import TraktAuthenticationOption from './models/authentication';
+import AuthenticationOption from './models/authentication';
 import Plugin from '../../core/plugin';
 
 
@@ -13,7 +13,7 @@ export default [
         default: false
     }),
 
-    new TraktAuthenticationOption(Plugin, 'authorization', 'Authentication', {
+    new AuthenticationOption(Plugin, 'authorization', 'Authentication', {
         requires: ['enabled']
     }),
 

@@ -6,7 +6,7 @@ import Client from '../../core/client';
 import Plugin from '../../core/plugin';
 
 
-export class TraktScrobbleService extends ScrobbleService {
+export class Scrobble extends ScrobbleService {
     constructor() {
         super(Plugin, [
             MediaTypes.Video.Movie,
@@ -109,4 +109,4 @@ export class TraktScrobbleService extends ScrobbleService {
 }
 
 // Register service
-Registry.registerService(new TraktScrobbleService());
+Registry.registerService(new Scrobble());
