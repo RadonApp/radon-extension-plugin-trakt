@@ -1,4 +1,4 @@
-import {Preferences, Storage} from 'eon.extension.browser';
+import {Preferences, Resources, Storage} from 'eon.extension.browser';
 import Callbacks from 'eon.extension.framework/core/callbacks';
 import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
 
@@ -66,7 +66,7 @@ export default class AuthenticationComponent extends OptionComponent {
             // Exchange code for authorization token
             Client['oauth'].token(
                 code,
-                'chrome-extension://mnkagkgiiedkikkkajbpopoonoddlimm/configuration/configuration.html'
+                Resources.getUrl('/configuration/configuration.html')
             ).then((authorization) => {
                 // Update client authorization
                 Client.authorization = authorization;
@@ -89,7 +89,7 @@ export default class AuthenticationComponent extends OptionComponent {
 
         // Generate authorize url
         var authorizeUrl = Client['oauth'].authorizeUrl(
-            'chrome-extension://mnkagkgiiedkikkkajbpopoonoddlimm/configuration/configuration.html',
+            Resources.getUrl('/configuration/configuration.html'),
             'callback:' + callbackId
         );
 
