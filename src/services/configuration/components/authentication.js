@@ -72,7 +72,7 @@ export default class TraktAuthenticationComponent extends OptionComponent {
                 Client.authorization = authorization;
 
                 // Update authorization token
-                Storage.putObject(Plugin.id + ':token', authorization).then(() => {
+                Storage.putObject(Plugin.id + ':session', authorization).then(() => {
                     // Refresh account
                     return this.refresh();
                 });
@@ -130,7 +130,7 @@ export default class TraktAuthenticationComponent extends OptionComponent {
         Client.authorization = null;
 
         // Clear token and account details from storage
-        return Storage.put(Plugin.id + ':token', null)
+        return Storage.put(Plugin.id + ':session', null)
             .then(() => Storage.put(Plugin.id + ':account', null))
             .then(() => {
                 // Update state
