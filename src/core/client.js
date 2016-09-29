@@ -1,6 +1,6 @@
 import {Storage} from 'eon.extension.browser';
 
-import Trakt from 'trakt.js';
+import Trakt from '@fuzeman/trakt/src/trakt.js';
 
 import Plugin from './plugin';
 

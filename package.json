@@ -4,7 +4,7 @@
   "main": "./src/index.js",
   "dependencies": {
     "lodash-es": "^4.16.1",
-    "trakt.js": "^1.0.0"
+    "@fuzeman/trakt": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.11.4",
