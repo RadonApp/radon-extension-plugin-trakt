@@ -13,7 +13,7 @@ Client.secret = 'fcdc46e6c512cb618ca287fe0367be7ed47362cb5996af10c6aaafd58b2de4e
 Client.ready = Storage.getObject(Plugin.id + ':session')
     .then((session) => {
         // Update client authorization
-        Client.session = session;
+        Client.authorization = session;
     });
 
 export default Client;
