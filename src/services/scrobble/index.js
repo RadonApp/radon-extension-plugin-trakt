@@ -15,7 +15,7 @@ export class Scrobble extends ScrobbleService {
     }
 
     onStarted(session) {
-        var item = this._buildMetadata(session, session.item);
+        var item = this._buildMetadata(session.item);
 
         if(item === null) {
             console.warn('Unable to build metadata for session:', session);
