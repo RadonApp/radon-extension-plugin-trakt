@@ -15,16 +15,15 @@ export class Scrobble extends ScrobbleService {
     }
 
     onStarted(session) {
-        // Build request
-        var request = this._buildRequest(session, session.item);
+        var item = this._buildMetadata(session, session.item);
 
-        if(request === null) {
-            console.warn('Unable to build request for session:', session);
+        if(item === null) {
+            console.warn('Unable to build metadata for session:', session);
             return;
         }
 
         // Send action
-        Client['scrobble'].start(request).then((body) => {
+        Client['scrobble'].start(item, session.progress * 100).then((body) => {
             console.debug('TODO: Handle "start" action response:', body);
         }, (body, statusCode) => {
             console.debug('TODO: Handle "start" action error, status code: %o, body: %O', statusCode, body);
@@ -32,16 +31,15 @@ export class Scrobble extends ScrobbleService {
     }
 
     onPaused(session) {
-        // Build request
-        var request = this._buildRequest(session, session.item);
+        var item = this._buildMetadata(session.item);
 
-        if(request === null) {
-            console.warn('Unable to build request for session:', session);
+        if(item === null) {
+            console.warn('Unable to build metadata for session:', session);
             return;
         }
 
         // Send action
-        Client['scrobble'].pause(request).then((body) => {
+        Client['scrobble'].pause(item, session.progress * 100).then((body) => {
             console.debug('TODO: Handle "pause" action response:', body);
         }, (body, statusCode) => {
             console.debug('TODO: Handle "pause" action error, status code: %o, body: %O', statusCode, body);
@@ -49,16 +47,15 @@ export class Scrobble extends ScrobbleService {
     }
 
     onEnded(session) {
-        // Build request
-        var request = this._buildRequest(session, session.item);
+        var item = this._buildMetadata(session.item);
 
-        if(request === null) {
-            console.warn('Unable to build request for session:', session);
+        if(item === null) {
+            console.warn('Unable to build metadata for session:', session);
             return;
         }
 
         // Send action
-        Client['scrobble'].stop(request).then((body) => {
+        Client['scrobble'].stop(item, session.progress * 100).then((body) => {
             console.debug('TODO: Handle "stop" action response:', body);
         }, (body, statusCode) => {
             console.debug('TODO: Handle "stop" action error, status code: %o, body: %O', statusCode, body);
@@ -67,25 +64,24 @@ export class Scrobble extends ScrobbleService {
 
     // region Private methods
 
-    _buildRequest(session, item) {
-        var request = {};
+    _buildMetadata(item) {
+        let result = {};
 
-        // Metadata
         if(item.type.media === MediaTypes.Video.Movie) {
             // Movie
-            request.movie = {
+            result.movie = {
                 title: item.title,
                 year: item.year
             };
         } else if(item.type.media === MediaTypes.Video.Episode) {
             // Show
-            request.show = {
+            result.show = {
                 title: item.show.title,
                 // year
             };
 
             // Episode
-            request.episode = {
+            result.episode = {
                 season: item.season.number,
                 number: item.number,
 
@@ -95,14 +91,7 @@ export class Scrobble extends ScrobbleService {
             return null;
         }
 
-        // Session
-        request.progress = session.progress * 100;
-
-        // Application
-        request.app_version = "0.1";
-        request.app_date = "dev";
-
-        return request;
+        return result;
     }
 
     // endregion

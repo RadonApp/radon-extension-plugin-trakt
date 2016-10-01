@@ -4,10 +4,12 @@
   "main": "./src/index.js",
   "dependencies": {
     "lodash-es": "^4.16.1",
-    "@fuzeman/trakt": "^1.0.0"
+    "@fuzeman/trakt": "^2.0.0-alpha.2"
   },
   "devDependencies": {
     "babel-core": "^6.11.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1"
   }

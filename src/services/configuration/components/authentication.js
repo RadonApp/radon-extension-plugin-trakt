@@ -61,26 +61,19 @@ export default class AuthenticationComponent extends OptionComponent {
     onAuthorized(code) {
         console.debug('onAuthorized() code: %o', code);
 
-        // Ensure client has been initialized
-        return Client.ready.then(() =>
-            // Exchange code for authorization token
-            Client['oauth'].token(
-                code,
-                Resources.getUrl('/configuration/configuration.html')
-            ).then((authorization) => {
-                // Update client authorization
-                Client.authorization = authorization;
-
-                // Update authorization token
-                Storage.putObject(Plugin.id + ':session', authorization).then(() => {
-                    // Refresh account
-                    return this.refresh();
-                });
-            }, (body, statusCode) => {
-                console.warn('Unable to retrieve authorization token, response with status code %o returned', statusCode);
-                return this.logout();
-            })
-        );
+        // Exchange code for authorization token
+        Client['oauth'].exchange(
+            code,
+            Resources.getUrl('/configuration/configuration.html')
+        ).then((session) => {
+            // Store session details
+            Storage.putObject(Plugin.id + ':session', session)
+                // Refresh account
+                .then(() => this.refresh());
+        }, (body, statusCode) => {
+            console.warn('Unable to retrieve authorization token, response with status code %o returned', statusCode);
+            return this.logout();
+        });
     }
 
     onLoginClicked() {
@@ -99,36 +92,30 @@ export default class AuthenticationComponent extends OptionComponent {
     }
 
     refresh() {
-        // Ensure client has been initialized
-        return Client.ready.then(() =>
-            // Fetch account settings
-            Client['users/settings'].get().then((account) => {
-                // Update state
-                this.setState({
-                    authenticated: true,
-                    account: account
-                });
+        // Fetch account settings
+        Client['users']['settings'].get().then((account) => {
+            // Update state
+            this.setState({
+                authenticated: true,
+                account: account
+            });
 
-                // Update account settings
-                Storage.putObject(Plugin.id + ':account', account);
+            // Update account settings
+            Storage.putObject(Plugin.id + ':account', account);
 
-                return account;
-            }, (body, statusCode) => {
-                // Clear authorization
-                return this.logout().then(() => {
-                    // Reject promise
-                    return Promise.reject(new Error(
-                        'Unable to retrieve account settings, response with status code ' + statusCode + ' returned'
-                    ));
-                });
-            })
-        );
+            return account;
+        }, (body, statusCode) => {
+            // Clear authorization
+            return this.logout().then(() => {
+                // Reject promise
+                return Promise.reject(new Error(
+                    'Unable to retrieve account settings, response with status code ' + statusCode + ' returned'
+                ));
+            });
+        });
     }
 
     logout() {
-        // Reset trakt client
-        Client.authorization = null;
-
         // Clear token and account details from storage
         return Storage.put(Plugin.id + ':session', null)
             .then(() => Storage.put(Plugin.id + ':account', null))
