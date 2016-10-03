@@ -14,7 +14,7 @@ export default new Client(Key, Secret, {
         version: 'dev'
     },
     session: () => {
-        return Storage.getObject(Plugin.id + ':session')
+        return Storage.getObject(Plugin.id + ':session');
     },
     onSessionRefreshed: (session) => {
         return Storage.put(Plugin.id + ':session', session);

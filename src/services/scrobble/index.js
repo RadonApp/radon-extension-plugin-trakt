@@ -76,7 +76,7 @@ export class Scrobble extends ScrobbleService {
         } else if(item.type.media === MediaTypes.Video.Episode) {
             // Show
             result.show = {
-                title: item.show.title,
+                title: item.show.title
                 // year
             };
 

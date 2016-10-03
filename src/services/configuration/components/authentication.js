@@ -1,4 +1,4 @@
-import {Preferences, Resources, Storage} from 'eon.extension.browser';
+import {Resources, Storage} from 'eon.extension.browser';
 import Callbacks from 'eon.extension.framework/core/callbacks';
 import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
 
@@ -78,10 +78,10 @@ export default class AuthenticationComponent extends OptionComponent {
 
     onLoginClicked() {
         // Generate authentication callback
-        var callbackId = Callbacks.create(Plugin, 'authorize');
+        let callbackId = Callbacks.create(Plugin, 'authorize');
 
         // Generate authorize url
-        var authorizeUrl = Client['oauth'].authorizeUrl(
+        let authorizeUrl = Client['oauth'].authorizeUrl(
             Resources.getUrl('/configuration/configuration.html'),
             'callback:' + callbackId
         );
@@ -131,8 +131,8 @@ export default class AuthenticationComponent extends OptionComponent {
     render() {
         if(this.state.authenticated) {
             // Logged in
-            var account = this.state.account.account;
-            var user = this.state.account.user;
+            let account = this.state.account.account;
+            let user = this.state.account.user;
 
             return (
                 <div data-component={Plugin.id + ':authentication'} className="box active" style={{
@@ -149,11 +149,17 @@ export default class AuthenticationComponent extends OptionComponent {
                             <h3 className="title">{user.name || user.username}</h3>
 
                             <div className="actions">
-                                <button type="button" className="button secondary small" onClick={this.refresh.bind(this)}>
+                                <button
+                                    type="button"
+                                    className="button secondary small"
+                                    onClick={this.refresh.bind(this)}>
                                     Refresh
                                 </button>
 
-                                <button type="button" className="button secondary small" onClick={this.logout.bind(this)}>
+                                <button
+                                    type="button"
+                                    className="button secondary small"
+                                    onClick={this.logout.bind(this)}>
                                     Logout
                                 </button>
                             </div>

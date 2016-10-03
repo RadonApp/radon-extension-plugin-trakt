@@ -57,7 +57,7 @@ export default [
             new CheckboxOption(Plugin, 'scrobble.notifications.error', 'Error', {
                 default: true,
                 requires: ['scrobble.enabled']
-            }),
+            })
         ])
     ]),
 
@@ -76,5 +76,5 @@ export default [
             default: true,
             requires: ['sync.enabled']
         })
-    ]),
+    ])
 ];
