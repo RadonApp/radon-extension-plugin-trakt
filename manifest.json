@@ -1,0 +1,12 @@
+{
+  "name": "Trakt.tv",
+  "version": "0.1.0",
+
+  "permissions": [
+    "https://api.trakt.tv/*"
+  ],
+
+  "web_accessible_resources": [
+    "destination.trakt.callback/destination.trakt.callback.html"
+  ]
+}
