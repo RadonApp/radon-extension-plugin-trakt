@@ -4,6 +4,9 @@ module.exports = {
             'node_modules/@fuzeman/trakt/src'
         ]
     },
+    children: [
+        'callback'
+    ],
     services: [
         'configuration',
 
