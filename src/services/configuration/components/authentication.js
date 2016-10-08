@@ -1,5 +1,6 @@
 import {Resources, Storage} from 'eon.extension.browser';
 import Callbacks from 'eon.extension.framework/core/callbacks';
+import {toCssUrl} from 'eon.extension.framework/core/helpers';
 import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
 
 import React from 'react';
@@ -136,13 +137,13 @@ export default class AuthenticationComponent extends OptionComponent {
 
             return (
                 <div data-component={Plugin.id + ':authentication'} className="box active" style={{
-                    backgroundImage: 'url(' + account.cover_image + ')'
+                    backgroundImage: toCssUrl(account.cover_image)
                 }}>
                     <div className="shadow"></div>
 
                     <div className="inner">
                         <div className="avatar" style={{
-                            backgroundImage: 'url(' + user.images.avatar.full + ')'
+                            backgroundImage: toCssUrl(user.images.avatar.full)
                         }}/>
 
                         <div className="content">
