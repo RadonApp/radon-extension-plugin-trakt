@@ -1,4 +1,6 @@
-import {Resources, Storage} from 'eon.extension.browser';
+import Extension from 'eon.extension.browser/extension';
+import Storage from 'eon.extension.browser/storage';
+
 import {toCssUrl} from 'eon.extension.framework/core/helpers';
 import Popup from 'eon.extension.framework/core/popup';
 import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
@@ -38,7 +40,7 @@ export default class AuthenticationComponent extends OptionComponent {
     onLoginClicked() {
         // Build authorization url
         let url = Client['oauth'].authorizeUrl(
-            Resources.getUrl('/destination.trakt.callback/destination.trakt.callback.html')
+            Extension.getUrl('/destination.trakt.callback/destination.trakt.callback.html')
         );
 
         // Open authorization page in popup
@@ -54,7 +56,7 @@ export default class AuthenticationComponent extends OptionComponent {
             offsetTop: 100
         }).then((code) => Client['oauth'].exchange(
             code,
-            Resources.getUrl('/destination.trakt.callback/destination.trakt.callback.html')
+            Extension.getUrl('/destination.trakt.callback/destination.trakt.callback.html')
         )).then((session) => {
             // Update authorization token
             return Storage.putObject(Plugin.id + ':session', session).then(() => {

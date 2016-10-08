@@ -1,4 +1,4 @@
-import {Storage} from 'eon.extension.browser';
+import Storage from 'eon.extension.browser/storage';
 
 import {Client} from '@fuzeman/trakt/src';
 
