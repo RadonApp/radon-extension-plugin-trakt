@@ -1,6 +1,8 @@
-import {Resources, Storage} from 'eon.extension.browser';
-import Callbacks from 'eon.extension.framework/core/callbacks';
+import Extension from 'eon.extension.browser/extension';
+import Storage from 'eon.extension.browser/storage';
+
 import {toCssUrl} from 'eon.extension.framework/core/helpers';
+import Popup from 'eon.extension.framework/core/popup';
 import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
 
 import React from 'react';
@@ -33,63 +35,37 @@ export default class AuthenticationComponent extends OptionComponent {
                     account: account
                 });
             });
-
-        // Retrieve callback details
-        Callbacks.get()
-            // Process callback
-            .then((callback) => {
-                if(callback === null) {
-                    console.debug('No callback has been set');
-                    return null;
-                }
-
-                if(callback.type === 'authorize') {
-                    return this.onAuthorized(callback.params.code);
-                }
-
-                return Promise.reject(new Error('Unknown callback: %o', callback));
-            }, () => {
-                return false;
-            })
-            // Remove callback details from storage
-            .then(() => Callbacks.remove())
-            // Catch errors
-            .catch((error) => {
-                console.warn('Unable to process callback:', error);
-            });
-    }
-
-    onAuthorized(code) {
-        console.debug('onAuthorized() code: %o', code);
-
-        // Exchange code for authorization token
-        Client['oauth'].exchange(
-            code,
-            Resources.getUrl('/configuration/configuration.html')
-        ).then((session) => {
-            // Store session details
-            Storage.putObject(Plugin.id + ':session', session)
-                // Refresh account
-                .then(() => this.refresh());
-        }, (body, statusCode) => {
-            console.warn('Unable to retrieve authorization token, response with status code %o returned', statusCode);
-            return this.logout();
-        });
     }
 
     onLoginClicked() {
-        // Generate authentication callback
-        let callbackId = Callbacks.create(Plugin, 'authorize');
-
-        // Generate authorize url
-        let authorizeUrl = Client['oauth'].authorizeUrl(
-            Resources.getUrl('/configuration/configuration.html'),
-            'callback:' + callbackId
+        // Build authorization url
+        let url = Client['oauth'].authorizeUrl(
+            Extension.getUrl('/destination.trakt.callback/destination.trakt.callback.html')
         );
 
-        // Redirect to authorize page
-        console.debug('Navigating to authorization page: %o', authorizeUrl);
-        window.location.href = authorizeUrl;
+        // Open authorization page in popup
+        Popup.open(url, {
+            location: 0,
+            status: 0,
+            toolbar: 0,
+
+            position: 'center',
+            width: 450,
+            height: 450,
+
+            offsetTop: 100
+        }).then((code) => Client['oauth'].exchange(
+            code,
+            Extension.getUrl('/destination.trakt.callback/destination.trakt.callback.html')
+        )).then((session) => {
+            // Update authorization token
+            return Storage.putObject(Plugin.id + ':session', session).then(() => {
+                // Refresh account
+                return this.refresh();
+            });
+        }, (error) => {
+            console.warn('Unable to authenticate with trakt.tv, error:', error.message);
+        });
     }
 
     refresh() {
