@@ -9,6 +9,6 @@
   },
 
   "web_accessible_resources": [
-    "destination.trakt.callback/destination.trakt.callback.html"
+    "destination/trakt/callback/callback.html"
   ]
 }
