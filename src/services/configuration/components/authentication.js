@@ -40,7 +40,7 @@ export default class AuthenticationComponent extends OptionComponent {
     onLoginClicked() {
         // Build authorization url
         let url = Client['oauth'].authorizeUrl(
-            Extension.getUrl('/destination.trakt.callback/destination.trakt.callback.html')
+            Extension.getUrl('/destination/trakt/callback/callback.html')
         );
 
         // Open authorization page in popup
@@ -56,7 +56,7 @@ export default class AuthenticationComponent extends OptionComponent {
             offsetTop: 100
         }).then((code) => Client['oauth'].exchange(
             code,
-            Extension.getUrl('/destination.trakt.callback/destination.trakt.callback.html')
+            Extension.getUrl('/destination/trakt/callback/callback.html')
         )).then((session) => {
             // Update authorization token
             return Storage.putObject(Plugin.id + ':session', session).then(() => {
