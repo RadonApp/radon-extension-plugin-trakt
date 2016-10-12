@@ -6,6 +6,7 @@ import Popup from 'eon.extension.framework/core/popup';
 import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
 
 import React from 'react';
+import uuid from 'uuid';
 
 import Client from '../../../core/client';
 import Plugin from '../../../core/plugin';
@@ -38,13 +39,21 @@ export default class AuthenticationComponent extends OptionComponent {
     }
 
     onLoginClicked() {
-        // Build authorization url
-        let url = Client['oauth'].authorizeUrl(
-            Extension.getUrl('/destination/trakt/callback/callback.html')
+        let popupId = uuid.v4();
+
+        // Build callback url
+        let callbackUrl = Extension.getCallbackUrl(
+            popupId,
+            '/destination/trakt/callback/callback.html'
         );
 
+        // Build authorize url
+        let authorizeUrl = Client['oauth'].authorizeUrl(callbackUrl);
+
         // Open authorization page in popup
-        Popup.open(url, {
+        Popup.open(authorizeUrl, {
+            id: popupId,
+
             location: 0,
             status: 0,
             toolbar: 0,
@@ -56,7 +65,7 @@ export default class AuthenticationComponent extends OptionComponent {
             offsetTop: 100
         }).then((code) => Client['oauth'].exchange(
             code,
-            Extension.getUrl('/destination/trakt/callback/callback.html')
+            callbackUrl
         )).then((session) => {
             // Update authorization token
             return Storage.putObject(Plugin.id + ':session', session).then(() => {
