@@ -1,8 +1,8 @@
 import Extension from 'eon.extension.browser/extension';
 import Storage from 'eon.extension.browser/storage';
 
-import {toCssUrl} from 'eon.extension.framework/core/helpers';
 import Popup from 'eon.extension.framework/core/popup';
+import {isDefined, toCssUrl} from 'eon.extension.framework/core/helpers';
 import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
 
 import React from 'react';
@@ -17,6 +17,8 @@ export default class AuthenticationComponent extends OptionComponent {
     constructor() {
         super();
 
+        this.popup = null;
+
         this.state = {
             authenticated: false,
             account: {}
@@ -24,6 +26,9 @@ export default class AuthenticationComponent extends OptionComponent {
     }
 
     componentWillMount() {
+        // Ensure previous popup has been disposed
+        this.disposePopup();
+
         // Retrieve account details
         Storage.getObject(Plugin.id + ':account')
             .then((account) => {
@@ -38,20 +43,38 @@ export default class AuthenticationComponent extends OptionComponent {
             });
     }
 
+    disposePopup() {
+        if(!isDefined(this.popup)) {
+            return;
+        }
+
+        // Dispose popup (close window, disconnect messaging channel)
+        try {
+            this.popup.dispose();
+        } catch(e) {
+            console.warn('Unable to dispose popup:', e.stack);
+        }
+
+        // Clear state
+        this.popup = null;
+    }
+
     onLoginClicked() {
         let popupId = uuid.v4();
 
         // Build callback url
         let callbackUrl = Extension.getCallbackUrl(
-            popupId,
             '/destination/trakt/callback/callback.html'
         );
 
         // Build authorize url
         let authorizeUrl = Client['oauth'].authorizeUrl(callbackUrl);
 
-        // Open authorization page in popup
-        Popup.open(authorizeUrl, {
+        // Ensure previous popup has been disposed
+        this.disposePopup();
+
+        // Create popup
+        this.popup = Popup.create(authorizeUrl, {
             id: popupId,
 
             location: 0,
@@ -63,17 +86,22 @@ export default class AuthenticationComponent extends OptionComponent {
             height: 450,
 
             offsetTop: 100
-        }).then((code) => Client['oauth'].exchange(
-            code,
-            callbackUrl
-        )).then((session) => {
-            // Update authorization token
-            return Storage.putObject(Plugin.id + ':session', session).then(() => {
-                // Refresh account
-                return this.refresh();
-            });
-        }, (error) => {
-            console.warn('Unable to authenticate with trakt.tv, error:', error.message);
+        });
+
+        // Store latest popup id as fallback (for Firefox)
+        Storage.putString(Plugin.id + ':authentication.latestPopupId', popupId).then(() => {
+            // Open authorize popup
+            this.popup.open()
+                .then((code) => Client['oauth'].exchange(code, callbackUrl))
+                .then((session) => {
+                    // Update authorization token
+                    return Storage.putObject(Plugin.id + ':session', session).then(() => {
+                        // Refresh account
+                        return this.refresh();
+                    });
+                }, (error) => {
+                    console.warn('Unable to authenticate with trakt.tv, error:', error.message);
+                });
         });
     }
 
