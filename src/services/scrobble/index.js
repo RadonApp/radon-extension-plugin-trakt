@@ -1,4 +1,5 @@
 import {MediaTypes} from 'eon.extension.framework/core/enums';
+import {round} from 'eon.extension.framework/core/helpers';
 import Registry from 'eon.extension.framework/core/registry';
 import ScrobbleService from 'eon.extension.framework/services/destination/scrobble';
 
@@ -15,7 +16,7 @@ export class Scrobble extends ScrobbleService {
     }
 
     onStarted(session) {
-        var item = this._buildMetadata(session.item);
+        let item = this._buildMetadata(session.item);
 
         if(item === null) {
             console.warn('Unable to build metadata for session:', session);
@@ -23,15 +24,19 @@ export class Scrobble extends ScrobbleService {
         }
 
         // Send action
-        Client['scrobble'].start(item, session.progress * 100).then((body) => {
+        Client['scrobble'].start(item, round(session.progress, 0)).then((body) => {
             console.debug('TODO: Handle "start" action response:', body);
         }, (body, statusCode) => {
             console.debug('TODO: Handle "start" action error, status code: %o, body: %O', statusCode, body);
         });
     }
 
+    onSeeked(session) {
+        return this.onStarted(session);
+    }
+
     onPaused(session) {
-        var item = this._buildMetadata(session.item);
+        let item = this._buildMetadata(session.item);
 
         if(item === null) {
             console.warn('Unable to build metadata for session:', session);
@@ -39,7 +44,7 @@ export class Scrobble extends ScrobbleService {
         }
 
         // Send action
-        Client['scrobble'].pause(item, session.progress * 100).then((body) => {
+        Client['scrobble'].pause(item, round(session.progress, 0)).then((body) => {
             console.debug('TODO: Handle "pause" action response:', body);
         }, (body, statusCode) => {
             console.debug('TODO: Handle "pause" action error, status code: %o, body: %O', statusCode, body);
@@ -47,7 +52,7 @@ export class Scrobble extends ScrobbleService {
     }
 
     onEnded(session) {
-        var item = this._buildMetadata(session.item);
+        let item = this._buildMetadata(session.item);
 
         if(item === null) {
             console.warn('Unable to build metadata for session:', session);
@@ -55,7 +60,7 @@ export class Scrobble extends ScrobbleService {
         }
 
         // Send action
-        Client['scrobble'].stop(item, session.progress * 100).then((body) => {
+        Client['scrobble'].stop(item, round(session.progress, 0)).then((body) => {
             console.debug('TODO: Handle "stop" action response:', body);
         }, (body, statusCode) => {
             console.debug('TODO: Handle "stop" action error, status code: %o, body: %O', statusCode, body);
