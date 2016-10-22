@@ -16,7 +16,7 @@ export class Scrobble extends ScrobbleService {
     }
 
     onStarted(session) {
-        let item = this._buildMetadata(session.item);
+        let item = this._buildMetadata(session.metadata);
 
         if(item === null) {
             console.warn('Unable to build metadata for session:', session);
@@ -36,7 +36,7 @@ export class Scrobble extends ScrobbleService {
     }
 
     onPaused(session) {
-        let item = this._buildMetadata(session.item);
+        let item = this._buildMetadata(session.metadata);
 
         if(item === null) {
             console.warn('Unable to build metadata for session:', session);
@@ -51,8 +51,8 @@ export class Scrobble extends ScrobbleService {
         });
     }
 
-    onEnded(session) {
-        let item = this._buildMetadata(session.item);
+    onStopped(session) {
+        let item = this._buildMetadata(session.metadata);
 
         if(item === null) {
             console.warn('Unable to build metadata for session:', session);
