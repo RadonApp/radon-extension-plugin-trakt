@@ -1,7 +1,7 @@
 import Extension from 'eon.extension.browser/extension';
 import Storage from 'eon.extension.browser/storage';
-
 import Popup from 'eon.extension.framework/popup';
+import Registry from 'eon.extension.framework/core/registry';
 import {isDefined, toCssUrl} from 'eon.extension.framework/core/helpers';
 import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
 
@@ -195,3 +195,8 @@ export default class AuthenticationComponent extends OptionComponent {
         );
     }
 }
+
+AuthenticationComponent.componentId = Plugin.id + ':services.configuration:authentication';
+
+// Register option component
+Registry.registerComponent(AuthenticationComponent);
