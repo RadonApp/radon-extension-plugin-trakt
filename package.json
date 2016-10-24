@@ -1,6 +1,6 @@
 {
   "name": "eon.extension.destination.trakt",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "main": "./src/index.js",
   "dependencies": {
     "lodash-es": "^4.16.1",
