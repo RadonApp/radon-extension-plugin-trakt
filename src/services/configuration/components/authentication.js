@@ -1,7 +1,7 @@
 import Extension from 'eon.extension.browser/extension';
 import Storage from 'eon.extension.browser/storage';
 
-import Popup from 'eon.extension.framework/core/popup';
+import Popup from 'eon.extension.framework/popup';
 import {isDefined, toCssUrl} from 'eon.extension.framework/core/helpers';
 import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
 
