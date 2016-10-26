@@ -13,7 +13,10 @@ export default [
     new Page(Plugin, null, Plugin.title, [
         new EnableOption(Plugin, 'enabled', 'Enabled', {
             default: false,
-            permissions: Plugin.manifest.permissions
+
+            type: 'plugin',
+            permissions: true,
+            contentScripts: true
         }),
 
         new AuthenticationOption(Plugin, 'authorization', 'Authentication', {
