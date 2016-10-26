@@ -24,45 +24,47 @@ export default [
         }),
 
         new Group(Plugin, 'scrobble', 'Scrobble', [
-            new EnableOption(Plugin, 'scrobble.enabled', 'Enabled', {
+            new EnableOption(Plugin, 'scrobble:enabled', 'Enabled', {
                 default: true,
-                requires: ['enabled']
+                requires: ['enabled'],
+
+                type: 'service'
             }),
 
-            new CheckboxOption(Plugin, 'scrobble.movies', 'Movies', {
+            new CheckboxOption(Plugin, 'scrobble:movies', 'Movies', {
                 default: true,
-                requires: ['scrobble.enabled']
+                requires: ['scrobble:enabled']
             }),
 
-            new CheckboxOption(Plugin, 'scrobble.episodes', 'Episodes', {
+            new CheckboxOption(Plugin, 'scrobble:episodes', 'Episodes', {
                 default: true,
-                requires: ['scrobble.enabled']
+                requires: ['scrobble:enabled']
             }),
 
-            new Group(Plugin, 'scrobble.notifications', 'Notifications', [
-                new EnableOption(Plugin, 'scrobble.notifications.enabled', 'Enabled', {
+            new Group(Plugin, 'scrobble:notifications', 'Notifications', [
+                new EnableOption(Plugin, 'scrobble:notifications.enabled', 'Enabled', {
                     default: true,
-                    requires: ['scrobble.enabled']
+                    requires: ['scrobble:enabled']
                 }),
 
-                new CheckboxOption(Plugin, 'scrobble.notifications.started', 'Started', {
+                new CheckboxOption(Plugin, 'scrobble:notifications.started', 'Started', {
                     default: false,
-                    requires: ['scrobble.enabled']
+                    requires: ['scrobble:enabled']
                 }),
 
-                new CheckboxOption(Plugin, 'scrobble.notifications.paused', 'Paused', {
+                new CheckboxOption(Plugin, 'scrobble:notifications.paused', 'Paused', {
                     default: false,
-                    requires: ['scrobble.enabled']
+                    requires: ['scrobble:enabled']
                 }),
 
-                new CheckboxOption(Plugin, 'scrobble.notifications.scrobbled', 'Scrobbled', {
+                new CheckboxOption(Plugin, 'scrobble:notifications.scrobbled', 'Scrobbled', {
                     default: true,
-                    requires: ['scrobble.enabled']
+                    requires: ['scrobble:enabled']
                 }),
 
-                new CheckboxOption(Plugin, 'scrobble.notifications.error', 'Error', {
+                new CheckboxOption(Plugin, 'scrobble:notifications.error', 'Error', {
                     default: true,
-                    requires: ['scrobble.enabled']
+                    requires: ['scrobble:enabled']
                 })
             ])
         ]),
@@ -70,7 +72,9 @@ export default [
         new Group(Plugin, 'sync', 'Sync', [
             new EnableOption(Plugin, 'sync.enabled', 'Enabled', {
                 default: true,
-                requires: ['enabled']
+                requires: ['enabled'],
+
+                type: 'service'
             }),
 
             new CheckboxOption(Plugin, 'sync.history', 'Watched history', {
