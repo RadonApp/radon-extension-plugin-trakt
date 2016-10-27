@@ -1,6 +1,6 @@
 {
   "name": "Trakt.tv",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "permissions": {
     "origins": [
       "*://api.trakt.tv/*"
