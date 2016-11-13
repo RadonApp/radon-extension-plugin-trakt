@@ -1,6 +1,6 @@
 {
   "name": "Trakt.tv",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "permissions": {
     "origins": [
       "*://api.trakt.tv/*"
@@ -8,5 +8,9 @@
   },
   "web_accessible_resources": [
     "destination/trakt/callback/callback.html"
-  ]
+  ],
+  "release": {
+    "date": "2016-11-13",
+    "version": "0.3.4"
+  }
 }
