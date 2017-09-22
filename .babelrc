@@ -1,7 +1,18 @@
 {
   "presets": ["es2015", "react"],
   "plugins": [
-    "babel-plugin-add-module-exports",
-    "babel-plugin-transform-object-rest-spread"
+    "add-module-exports",
+    "transform-object-rest-spread",
+    ["@fuzeman/module-resolver", {
+      "root": [
+        "../eon.extension.browser.base/node_modules",
+        "../../Destinations/eon.extension.destination.trakt/node_modules"
+      ],
+      "alias": {
+        "eon.extension.browser": "./src",
+        "eon.extension.framework": "../../eon.extension.framework/src",
+        "eon.extension.destination.trakt": "../../Destinations/eon.extension.destination.trakt/src"
+      }
+    }]
   ]
 }
