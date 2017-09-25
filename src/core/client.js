@@ -1,4 +1,4 @@
-import Storage from 'eon.extension.browser/storage';
+import Storage from 'neon-extension-browser/storage';
 
 import {Client} from '@fuzeman/trakt/src';
 
@@ -10,7 +10,7 @@ const Secret = 'fcdc46e6c512cb618ca287fe0367be7ed47362cb5996af10c6aaafd58b2de4ef
 
 export default new Client(Key, Secret, {
     application: {
-        name: 'Eon',
+        name: 'Neon',
 
         date: Plugin.release.date,
         version: Plugin.release.version

@@ -1,4 +1,4 @@
-import DestinationPlugin from 'eon.extension.framework/base/plugins/destination';
+import DestinationPlugin from 'neon-extension-framework/base/plugins/destination';
 
 import Manifest from '../../manifest.json';
 

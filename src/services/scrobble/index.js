@@ -1,7 +1,7 @@
-import {MediaTypes} from 'eon.extension.framework/core/enums';
-import {round} from 'eon.extension.framework/core/helpers';
-import Registry from 'eon.extension.framework/core/registry';
-import ScrobbleService from 'eon.extension.framework/services/destination/scrobble';
+import {MediaTypes} from 'neon-extension-framework/core/enums';
+import {round} from 'neon-extension-framework/core/helpers';
+import Registry from 'neon-extension-framework/core/registry';
+import ScrobbleService from 'neon-extension-framework/services/destination/scrobble';
 
 import Client from '../../core/client';
 import Plugin from '../../core/plugin';

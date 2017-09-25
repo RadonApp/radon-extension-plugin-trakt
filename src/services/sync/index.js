@@ -1,5 +1,5 @@
-import SyncService from 'eon.extension.framework/services/destination/sync';
-import Registry from 'eon.extension.framework/core/registry';
+import SyncService from 'neon-extension-framework/services/destination/sync';
+import Registry from 'neon-extension-framework/core/registry';
 
 import Plugin from '../../core/plugin';
 

@@ -1,4 +1,4 @@
-import {PluginOption} from 'eon.extension.framework/services/configuration/models';
+import {PluginOption} from 'neon-extension-framework/services/configuration/models';
 
 import merge from 'lodash-es/merge';
 

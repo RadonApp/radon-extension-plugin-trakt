@@ -3,7 +3,7 @@ import {
     Page,
     CheckboxOption,
     EnableOption
-} from 'eon.extension.framework/services/configuration/models';
+} from 'neon-extension-framework/services/configuration/models';
 
 import AuthenticationOption from './models/authentication';
 import Plugin from '../../core/plugin';

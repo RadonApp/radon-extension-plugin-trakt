@@ -1,9 +1,9 @@
-import Extension from 'eon.extension.browser/extension';
-import Storage from 'eon.extension.browser/storage';
-import Popup from 'eon.extension.framework/popup';
-import Registry from 'eon.extension.framework/core/registry';
-import {isDefined, toCssUrl} from 'eon.extension.framework/core/helpers';
-import {OptionComponent} from 'eon.extension.framework/services/configuration/components';
+import Extension from 'neon-extension-browser/extension';
+import Storage from 'neon-extension-browser/storage';
+import Popup from 'neon-extension-framework/popup';
+import Registry from 'neon-extension-framework/core/registry';
+import {isDefined, toCssUrl} from 'neon-extension-framework/core/helpers';
+import {OptionComponent} from 'neon-extension-framework/services/configuration/components';
 
 import React from 'react';
 import uuid from 'uuid';

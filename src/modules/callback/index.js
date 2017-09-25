@@ -1,9 +1,9 @@
-import PopupCallbackHandler from 'eon.extension.framework/popup/callback';
-import {isDefined} from 'eon.extension.framework/core/helpers';
+import PopupCallbackHandler from 'neon-extension-framework/popup/callback';
+import {isDefined} from 'neon-extension-framework/core/helpers';
 
 import querystring from 'querystring';
 
-import Plugin from 'eon.extension.destination.trakt/core/plugin';
+import Plugin from 'neon-extension-destination-trakt/core/plugin';
 
 
 function process() {

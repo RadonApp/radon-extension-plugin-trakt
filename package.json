@@ -1,5 +1,5 @@
 {
-  "name": "eon.extension.destination.trakt",
+  "name": "neon-extension-destination-trakt",
   "version": "0.3.4",
   "main": "./src/index.js",
   "devDependencies": {
