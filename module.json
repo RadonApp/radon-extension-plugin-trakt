@@ -1,0 +1,24 @@
+{
+  "title": "Trakt.tv",
+
+  "origins": [
+    "*://api.trakt.tv/*"
+  ],
+  "services": [
+    "configuration",
+
+    "destination/scrobble",
+    "destination/sync"
+  ],
+  "web_accessible_resources": [
+    "destination/trakt/callback/callback.html"
+  ],
+  "webpack": {
+    "babel": [
+      "node_modules/@fuzeman/trakt/src"
+    ],
+    "chunks": [
+      "callback"
+    ]
+  }
+}

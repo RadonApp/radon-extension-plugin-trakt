@@ -1,6 +1,6 @@
 import DestinationPlugin from 'neon-extension-framework/base/plugins/destination';
 
-import Manifest from '../../manifest.json';
+import Manifest from '../../module.json';
 
 
 export class TraktPlugin extends DestinationPlugin {
