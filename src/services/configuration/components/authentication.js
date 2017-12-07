@@ -1,12 +1,13 @@
+import IsNil from 'lodash-es/isNil';
+import React from 'react';
+import Uuid from 'uuid';
+
 import Extension from 'neon-extension-browser/extension';
 import Storage from 'neon-extension-browser/storage';
 import Popup from 'neon-extension-framework/popup';
 import Registry from 'neon-extension-framework/core/registry';
-import {isDefined, toCssUrl} from 'neon-extension-framework/core/helpers';
+import {toCssUrl} from 'neon-extension-framework/core/helpers';
 import {OptionComponent} from 'neon-extension-framework/services/configuration/components';
-
-import React from 'react';
-import uuid from 'uuid';
 
 import Client from '../../../core/client';
 import Plugin from '../../../core/plugin';
@@ -44,7 +45,7 @@ export default class AuthenticationComponent extends OptionComponent {
     }
 
     disposePopup() {
-        if(!isDefined(this.popup)) {
+        if(IsNil(this.popup)) {
             return;
         }
 
@@ -60,7 +61,7 @@ export default class AuthenticationComponent extends OptionComponent {
     }
 
     onLoginClicked() {
-        let popupId = uuid.v4();
+        let popupId = Uuid.v4();
 
         // Build callback url
         let callbackUrl = Extension.getCallbackUrl(

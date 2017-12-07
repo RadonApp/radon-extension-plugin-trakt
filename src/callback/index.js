@@ -1,7 +1,7 @@
-import PopupCallbackHandler from 'neon-extension-framework/popup/callback';
-import {isDefined} from 'neon-extension-framework/core/helpers';
+import IsNil from 'lodash-es/isNil';
+import QueryString from 'querystring';
 
-import querystring from 'querystring';
+import PopupCallbackHandler from 'neon-extension-framework/popup/callback';
 
 import Plugin from 'neon-extension-destination-trakt/core/plugin';
 
@@ -16,12 +16,12 @@ function process() {
     }
 
     // Decode query parameters
-    let query = querystring.decode(
+    let query = QueryString.decode(
         window.location.search.substring(1)
     );
 
     // Ensure authorization code is defined
-    if(!isDefined(query.code)) {
+    if(IsNil(query.code)) {
         handler.reject('Unable to retrieve authorization code');
         return;
     }
