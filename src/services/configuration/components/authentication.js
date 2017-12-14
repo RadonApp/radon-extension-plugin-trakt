@@ -3,7 +3,6 @@ import React from 'react';
 import Uuid from 'uuid';
 
 import Extension from 'neon-extension-browser/extension';
-import Storage from 'neon-extension-browser/storage';
 import Popup from 'neon-extension-framework/popup';
 import Registry from 'neon-extension-framework/core/registry';
 import {toCssUrl} from 'neon-extension-framework/core/helpers';
@@ -31,7 +30,7 @@ export default class AuthenticationComponent extends OptionComponent {
         this.disposePopup();
 
         // Retrieve account details
-        Storage.getObject(Plugin.id + ':account')
+        Plugin.storage.getObject('account')
             .then((account) => {
                 if(account === null) {
                     return;
@@ -90,13 +89,13 @@ export default class AuthenticationComponent extends OptionComponent {
         });
 
         // Store latest popup id as fallback (for Firefox)
-        Storage.putString(Plugin.id + ':authentication.latestPopupId', popupId).then(() => {
+        Plugin.storage.putString('authentication.latestPopupId', popupId).then(() => {
             // Open authorize popup
             this.popup.open()
                 .then((code) => Client['oauth'].exchange(code, callbackUrl))
                 .then((session) => {
                     // Update authorization token
-                    return Storage.putObject(Plugin.id + ':session', session).then(() => {
+                    return Plugin.storage.putObject('session', session).then(() => {
                         // Refresh account
                         return this.refresh();
                     });
@@ -116,7 +115,7 @@ export default class AuthenticationComponent extends OptionComponent {
             });
 
             // Update account settings
-            Storage.putObject(Plugin.id + ':account', account);
+            Plugin.storage.putObject('account', account);
 
             return account;
         }, (body, statusCode) => {
@@ -132,8 +131,8 @@ export default class AuthenticationComponent extends OptionComponent {
 
     logout() {
         // Clear token and account details from storage
-        return Storage.put(Plugin.id + ':session', null)
-            .then(() => Storage.put(Plugin.id + ':account', null))
+        return Plugin.storage.put('session', null)
+            .then(() => Plugin.storage.put('account', null))
             .then(() => {
                 // Update state
                 this.setState({

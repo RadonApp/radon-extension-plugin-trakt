@@ -1,5 +1,3 @@
-import Storage from 'neon-extension-browser/storage';
-
 import {Client} from '@fuzeman/trakt/src';
 
 import Plugin from './plugin';
@@ -16,9 +14,9 @@ export default new Client(Key, Secret, {
         version: Plugin.release.version
     },
     session: () => {
-        return Storage.getObject(Plugin.id + ':session');
+        return Plugin.storage.getObject('session');
     },
     onSessionRefreshed: (session) => {
-        return Storage.put(Plugin.id + ':session', session);
+        return Plugin.storage.put('session', session);
     }
 });
