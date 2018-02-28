@@ -9,9 +9,7 @@ const Secret = 'fcdc46e6c512cb618ca287fe0367be7ed47362cb5996af10c6aaafd58b2de4ef
 export default new Client(Key, Secret, {
     application: {
         name: 'Neon',
-
-        date: Plugin.release.date,
-        version: Plugin.release.version
+        version: Plugin.manifest.version
     },
     session: () => {
         return Plugin.storage.getObject('session');
