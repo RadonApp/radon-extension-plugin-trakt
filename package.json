@@ -1,7 +1,29 @@
 {
   "name": "neon-extension-destination-trakt",
   "version": "0.3.4",
-  "main": "./src/index.js",
+  "description": "Neon Extension: Trakt.tv",
+  "keywords": [
+    "neon",
+    "neon-extension",
+    "trakt"
+  ],
+  "homepage": "https://github.com/NeApp/neon-extension",
+  "author": "Dean Gardiner <me@dgardiner.net>",
+  "license": "GPL-3.0",
+  "main": "./src",
+  "bugs": {
+    "url": "https://github.com/NeApp/neon-extension/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NeApp/neon-extension-destination-trakt"
+  },
+  "scripts": {
+    "test": "echo No tests available yet."
+  },
+  "dependencies": {
+    "@fuzeman/trakt": "2.0.0-alpha.2"
+  },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.32",
     "@babel/plugin-proposal-class-properties": "7.0.0-beta.32",
@@ -11,15 +33,17 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^8.0.0-beta.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "eslint": "^3.7.0",
     "eslint-loader": "^1.5.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-react": "^6.3.0"
   },
-  "dependencies": {
-    "@fuzeman/trakt": "2.0.0-alpha.2"
-  },
   "peerDependencies": {
-    "lodash-es": "^4.16.1"
+    "lodash-es": "^4.16.1",
+    "neon-extension-framework": "^1.7.2",
+    "querystring-es3": "^0.2.1",
+    "urijs": "^1.18.2",
+    "uuid": "^2.0.3"
   }
 }
