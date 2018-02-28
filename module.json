@@ -7,8 +7,7 @@
   "services": [
     "configuration",
 
-    "destination/scrobble",
-    "destination/sync"
+    "destination/scrobble"
   ],
   "web_accessible_resources": [
     "destination/trakt/callback/callback.html"
