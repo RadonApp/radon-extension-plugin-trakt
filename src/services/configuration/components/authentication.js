@@ -3,7 +3,6 @@ import React from 'react';
 import Uuid from 'uuid';
 
 import Extension from 'neon-extension-browser/extension';
-import Popup from 'neon-extension-framework/popup';
 import Registry from 'neon-extension-framework/core/registry';
 import {toCssUrl} from 'neon-extension-framework/core/helpers';
 import {OptionComponent} from 'neon-extension-framework/services/configuration/components';
@@ -17,17 +16,36 @@ export default class AuthenticationComponent extends OptionComponent {
     constructor() {
         super();
 
-        this.popup = null;
+        this.callbackId = null;
+        this.callbackUrl = null;
 
+        this.messaging = null;
+
+        // Initial state
         this.state = {
             authenticated: false,
+            subscribed: false,
             account: {}
         };
     }
 
+    componentWillUnmount() {
+        // Close messaging service
+        if(!IsNil(this.messaging)) {
+            this.messaging.close();
+            this.messaging = null;
+        }
+    }
+
     componentWillMount() {
-        // Ensure previous popup has been disposed
-        this.disposePopup();
+        // Retrieve messaging service
+        this.messaging = Plugin.messaging.service('authentication');
+
+        // Subscribe to service
+        this.messaging.subscribe().then(
+            () => this.setState({ subscribed: true }),
+            () => this.setState({ subscribed: false })
+        );
 
         // Retrieve account details
         Plugin.storage.getObject('account')
@@ -43,71 +61,60 @@ export default class AuthenticationComponent extends OptionComponent {
             });
     }
 
-    disposePopup() {
-        if(IsNil(this.popup)) {
+    onLoginClicked() {
+        // Bind to callback event
+        this.messaging.once('callback', this.onCallback.bind(this));
+
+        // Generate callback id (to validate against received callback events)
+        this.callbackId = Uuid.v4();
+
+        // Generate callback url
+        this.callbackUrl = Extension.getCallbackUrl(
+            '/destination/trakt/callback/callback.html?id=' + this.callbackId
+        );
+
+        // Open authorization page
+        window.open(Client['oauth'].authorizeUrl(this.callbackUrl), '_blank');
+    }
+
+    onCallback(query) {
+        if(query.id !== this.callbackId) {
+            console.warn('Unable to authenticate with Last.fm: Invalid callback id');
+
+            // Emit error event
+            this.messaging.emit('error', {
+                'title': 'Invalid callback id',
+                'description': 'Please ensure you only click the "Login" button once.'
+            });
+
             return;
         }
 
-        // Dispose popup (close window, disconnect messaging channel)
-        try {
-            this.popup.dispose();
-        } catch(e) {
-            console.warn('Unable to dispose popup:', e.stack);
-        }
-
-        // Clear state
-        this.popup = null;
-    }
-
-    onLoginClicked() {
-        let popupId = Uuid.v4();
-
-        // Build callback url
-        let callbackUrl = Extension.getCallbackUrl(
-            '/destination/trakt/callback/callback.html'
-        );
-
-        // Build authorize url
-        let authorizeUrl = Client['oauth'].authorizeUrl(callbackUrl);
-
-        // Ensure previous popup has been disposed
-        this.disposePopup();
-
-        // Create popup
-        this.popup = Popup.create(authorizeUrl, {
-            id: popupId,
-
-            location: 0,
-            status: 0,
-            toolbar: 0,
-
-            position: 'center',
-            width: 450,
-            height: 450,
-
-            offsetTop: 100
-        });
-
-        // Store latest popup id as fallback (for Firefox)
-        Plugin.storage.putString('authentication.latestPopupId', popupId).then(() => {
-            // Open authorize popup
-            this.popup.open()
-                .then((code) => Client['oauth'].exchange(code, callbackUrl))
-                .then((session) => {
-                    // Update authorization token
-                    return Plugin.storage.putObject('session', session).then(() => {
-                        // Refresh account
-                        return this.refresh();
-                    });
-                }, (error) => {
-                    console.warn('Unable to authenticate with trakt.tv, error:', error.message);
+        // Exchange code for session
+        Client['oauth'].exchange(query.code, this.callbackUrl).then((session) => {
+            // Update authorization token
+            return Plugin.storage.putObject('session', session)
+                // Refresh account details
+                .then(() => this.refresh())
+                .then(() => {
+                    // Emit success event
+                    this.messaging.emit('success');
                 });
+
+        }, (error) => {
+            console.warn('Unable to authenticate with Trakt.tv: %s', error.message);
+
+            // Emit error event
+            this.messaging.emit('error', {
+                'title': 'Unable to request authentication session',
+                'description': error.message
+            });
         });
     }
 
     refresh() {
         // Fetch account settings
-        Client['users']['settings'].get().then((account) => {
+        return Client['users']['settings'].get().then((account) => {
             // Update state
             this.setState({
                 authenticated: true,
@@ -187,7 +194,11 @@ export default class AuthenticationComponent extends OptionComponent {
         return (
             <div data-component={Plugin.id + ':authentication'} className="box login">
                 <div className="inner">
-                    <button type="button" className="button small" onClick={this.onLoginClicked.bind(this)}>
+                    <button
+                        type="button"
+                        className="button small"
+                        disabled={!this.state.subscribed}
+                        onClick={this.onLoginClicked.bind(this)}>
                         Login
                     </button>
                 </div>
