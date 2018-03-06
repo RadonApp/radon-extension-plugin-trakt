@@ -4,6 +4,7 @@ import Registry from 'neon-extension-framework/core/registry';
 import ScrobbleService from 'neon-extension-framework/services/destination/scrobble';
 
 import Client from '../../core/client';
+import Log from '../../core/logger';
 import Plugin from '../../core/plugin';
 
 
@@ -19,15 +20,15 @@ export class Scrobble extends ScrobbleService {
         let item = this._buildMetadata(session.metadata);
 
         if(item === null) {
-            console.warn('Unable to build metadata for session:', session);
+            Log.warn('Unable to build metadata for session:', session);
             return;
         }
 
         // Send action
         Client['scrobble'].start(item, round(session.progress, 0)).then((body) => {
-            console.debug('TODO: Handle "start" action response:', body);
+            Log.debug('TODO: Handle "start" action response:', body);
         }, (body, statusCode) => {
-            console.debug('TODO: Handle "start" action error, status code: %o, body: %O', statusCode, body);
+            Log.debug('TODO: Handle "start" action error, status code: %o, body: %O', statusCode, body);
         });
     }
 
@@ -39,15 +40,15 @@ export class Scrobble extends ScrobbleService {
         let item = this._buildMetadata(session.metadata);
 
         if(item === null) {
-            console.warn('Unable to build metadata for session:', session);
+            Log.warn('Unable to build metadata for session:', session);
             return;
         }
 
         // Send action
         Client['scrobble'].pause(item, round(session.progress, 0)).then((body) => {
-            console.debug('TODO: Handle "pause" action response:', body);
+            Log.debug('TODO: Handle "pause" action response:', body);
         }, (body, statusCode) => {
-            console.debug('TODO: Handle "pause" action error, status code: %o, body: %O', statusCode, body);
+            Log.debug('TODO: Handle "pause" action error, status code: %o, body: %O', statusCode, body);
         });
     }
 
@@ -55,15 +56,15 @@ export class Scrobble extends ScrobbleService {
         let item = this._buildMetadata(session.metadata);
 
         if(item === null) {
-            console.warn('Unable to build metadata for session:', session);
+            Log.warn('Unable to build metadata for session:', session);
             return;
         }
 
         // Send action
         Client['scrobble'].stop(item, round(session.progress, 0)).then((body) => {
-            console.debug('TODO: Handle "stop" action response:', body);
+            Log.debug('TODO: Handle "stop" action response:', body);
         }, (body, statusCode) => {
-            console.debug('TODO: Handle "stop" action error, status code: %o, body: %O', statusCode, body);
+            Log.debug('TODO: Handle "stop" action error, status code: %o, body: %O', statusCode, body);
         });
     }
 

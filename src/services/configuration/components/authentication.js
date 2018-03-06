@@ -8,6 +8,7 @@ import {toCssUrl} from 'neon-extension-framework/core/helpers';
 import {OptionComponent} from 'neon-extension-framework/services/configuration/components';
 
 import Client from '../../../core/client';
+import Log from '../../../core/logger';
 import Plugin from '../../../core/plugin';
 import './authentication.scss';
 
@@ -79,7 +80,7 @@ export default class AuthenticationComponent extends OptionComponent {
 
     onCallback(query) {
         if(query.id !== this.callbackId) {
-            console.warn('Unable to authenticate with Last.fm: Invalid callback id');
+            Log.warn('Unable to authenticate with Last.fm: Invalid callback id');
 
             // Emit error event
             this.messaging.emit('error', {
@@ -102,7 +103,7 @@ export default class AuthenticationComponent extends OptionComponent {
                 });
 
         }, (error) => {
-            console.warn('Unable to authenticate with Trakt.tv: %s', error.message);
+            Log.warn('Unable to authenticate with Trakt.tv: %s', error.message);
 
             // Emit error event
             this.messaging.emit('error', {
