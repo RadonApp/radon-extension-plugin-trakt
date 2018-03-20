@@ -1,8 +1,8 @@
 import IsNil from 'lodash-es/isNil';
 import QueryString from 'querystring';
+import Runtime from 'wes/runtime';
 import URI from 'urijs';
 
-import Extension from 'neon-extension-browser/extension';
 import FrameworkPlugin from 'neon-extension-framework/core/plugin';
 
 import Plugin from '../core/plugin';
@@ -119,7 +119,7 @@ import Plugin from '../core/plugin';
     document.title = `${Plugin.title} Authentication - ${FrameworkPlugin.title}`;
 
     // Refresh page if the extension identifier is not available
-    if(IsNil(Extension.id)) {
+    if(IsNil(Runtime.id)) {
         refresh();
         return;
     }

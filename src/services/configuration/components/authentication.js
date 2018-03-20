@@ -1,8 +1,8 @@
 import IsNil from 'lodash-es/isNil';
 import React from 'react';
+import Runtime from 'wes/runtime';
 import Uuid from 'uuid';
 
-import Extension from 'neon-extension-browser/extension';
 import Registry from 'neon-extension-framework/core/registry';
 import {toCssUrl} from 'neon-extension-framework/core/helpers';
 import {OptionComponent} from 'neon-extension-framework/services/configuration/components';
@@ -70,7 +70,7 @@ export default class AuthenticationComponent extends OptionComponent {
         this.callbackId = Uuid.v4();
 
         // Generate callback url
-        this.callbackUrl = Extension.getCallbackUrl(
+        this.callbackUrl = Runtime.getURL(
             '/destination/trakt/callback/callback.html?id=' + this.callbackId
         );
 
