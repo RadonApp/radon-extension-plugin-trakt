@@ -1,11 +1,10 @@
-import {MediaTypes} from 'neon-extension-framework/core/enums';
-import {round} from 'neon-extension-framework/core/helpers';
-import Registry from 'neon-extension-framework/core/registry';
-import ScrobbleService from 'neon-extension-framework/services/destination/scrobble';
-
-import Client from '../../core/client';
-import Log from '../../core/logger';
-import Plugin from '../../core/plugin';
+import Client from 'neon-extension-destination-trakt/Api/Client';
+import Log from 'neon-extension-destination-trakt/Core/Logger';
+import Plugin from 'neon-extension-destination-trakt/Core/Plugin';
+import ScrobbleService from 'neon-extension-framework/Services/Destination/Scrobble';
+import Registry from 'neon-extension-framework/Core/Registry';
+import {MediaTypes} from 'neon-extension-framework/Core/Enums';
+import {round} from 'neon-extension-framework/Utilities/Value';
 
 
 export class Scrobble extends ScrobbleService {

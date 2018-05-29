@@ -5,19 +5,18 @@
     "*://api.trakt.tv/*"
   ],
   "services": [
-    "configuration",
-
-    "destination/scrobble"
+    "Configuration",
+    "Destination:Scrobble"
   ],
   "web_accessible_resources": [
-    "destination/trakt/callback/callback.html"
+    "Modules/neon-extension-destination-trakt/Callback.html"
   ],
   "webpack": {
     "babel": [
       "node_modules/@fuzeman/trakt/src"
     ],
-    "chunks": [
-      "callback"
-    ]
+    "modules": {
+      "Callback": true
+    }
   }
 }
