@@ -16,7 +16,7 @@ export class Scrobble extends ScrobbleService {
     }
 
     onStarted(session) {
-        let item = this._buildMetadata(session.metadata);
+        let item = this._buildItem(session.item);
 
         if(item === null) {
             Log.warn('Unable to build metadata for session:', session);
@@ -36,7 +36,7 @@ export class Scrobble extends ScrobbleService {
     }
 
     onPaused(session) {
-        let item = this._buildMetadata(session.metadata);
+        let item = this._buildItem(session.item);
 
         if(item === null) {
             Log.warn('Unable to build metadata for session:', session);
@@ -52,7 +52,7 @@ export class Scrobble extends ScrobbleService {
     }
 
     onStopped(session) {
-        let item = this._buildMetadata(session.metadata);
+        let item = this._buildItem(session.item);
 
         if(item === null) {
             Log.warn('Unable to build metadata for session:', session);
@@ -69,34 +69,34 @@ export class Scrobble extends ScrobbleService {
 
     // region Private methods
 
-    _buildMetadata(item) {
-        let result = {};
-
-        if(item.type.media === MediaTypes.Video.Movie) {
-            // Movie
-            result.movie = {
-                title: item.title,
-                year: item.year
+    _buildItem(item) {
+        // Movie
+        if(item.type === MediaTypes.Video.Movie) {
+            return {
+                movie: {
+                    title: item.title,
+                    year: item.year
+                }
             };
-        } else if(item.type.media === MediaTypes.Video.Episode) {
-            // Show
-            result.show = {
-                title: item.show.title
-                // year
-            };
-
-            // Episode
-            result.episode = {
-                season: item.season.number,
-                number: item.number,
-
-                title: item.title
-            };
-        } else {
-            return null;
         }
 
-        return result;
+        // Episode
+        if(item.type === MediaTypes.Video.Episode) {
+            return {
+                show: {
+                    title: item.season.show.title
+                },
+                episode: {
+                    season: item.season.number,
+                    number: item.number,
+
+                    title: item.title
+                }
+            };
+        }
+
+        // Unknown metadata type
+        return null;
     }
 
     // endregion
