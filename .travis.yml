@@ -7,7 +7,7 @@ deploy:
   provider: npm
   email: neapp-ci@me.dgardiner.net
   api_key:
-    secure: TODO
+    secure: FxXgwupwJ1G/zW/gsSHtuQo+1lQ4b2xzK4C3tRlpvhhKVAHFhR2EJiyqZaGK/F6YD/dZ4Il+31g18584S8yJ8xZiFqUBQH+Pf26I5JaEqjV7T0q5Fi+paHLTvS4Z3AEK2ywFwmdU/74MnCCJP7EBO1EUSGWmZgEYRVLEnv0zC2S2MSkPl2zo+NWkyJuDsIs4TDqHJJv1PAUAXZGhrFk2lhEz4ZhvWopZg0eOSKjpIYv0dJis9XeclhVqct7eqNpLishXgYRVT/cV67wYNox1/9L3lLrHiWhT3UAPs9k0mi4xbzp1MsjSkn6VF5V8DsTqnS3gA8UzoMwmwuioNka/WcPSkkU/47HhO3FNUi1R3xDNHzlsNsUF9ipBB/MVJ1GAMDWpjPiR69nGyJU7NQxYdYQ0lL4/Xu/Vd/RetaEOV+ffI7c1XH8b3IWcXhxcj0ptJbKu6HE4pvw9RHv6rJ5WagE8rlzDTmfj9Ep+RaDZgBqMRvDiZdEFn4ZBnbVdzaAjTpl+UpkMq/QERpm9Y6eTNgiTwR4ih/1hgDMQWMV61kwF52HWrXqqoyFQxHOx4CNEjivRcVnCzJ5HUnVgNw8BTNMglj3U75kdWEm9SLSwoB4xaVbKB5cfd+a9+pRlyKzFyS/8jWWLz/N+DOtaPaPcil58lxm1YgO1OEu3GU1iyo8=
   on:
     repo: NeApp/neon-extension-destination-trakt
     tags: true
