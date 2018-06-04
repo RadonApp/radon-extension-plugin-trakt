@@ -7,10 +7,10 @@ import Registry from 'neon-extension-framework/Core/Registry';
 import TranslationNamespace from 'neon-extension-framework/Components/Translation/Namespace';
 import {OptionComponent} from 'neon-extension-framework/Components/Configuration';
 import {toCssUrl} from 'neon-extension-framework/Utilities/Css';
-import Client from 'neon-extension-destination-trakt/Api/Client';
-import Log from 'neon-extension-destination-trakt/Core/Logger';
-import Plugin from 'neon-extension-destination-trakt/Core/Plugin';
 
+import Client from '../../Api/Client';
+import Log from '../../Core/Logger';
+import Plugin from '../../Core/Plugin';
 import './AuthenticationOptionComponent.scss';
 
 

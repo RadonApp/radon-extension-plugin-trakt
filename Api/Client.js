@@ -1,6 +1,6 @@
 import {Client} from '@fuzeman/trakt/src';
 
-import Plugin from 'neon-extension-destination-trakt/Core/Plugin';
+import Plugin from '../Core/Plugin';
 
 
 const Key = 'c8213aa5317b9a246b34edc7d79206e9a7ac9876ba28dcab8671d0b59ad67b77';

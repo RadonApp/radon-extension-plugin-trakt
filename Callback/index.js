@@ -3,7 +3,7 @@ import QueryString from 'querystring';
 import Runtime from 'wes/runtime';
 import URI from 'urijs';
 
-import Plugin from 'neon-extension-destination-trakt/Core/Plugin';
+import Plugin from '../Core/Plugin';
 
 
 (function() {
