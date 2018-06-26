@@ -1,0 +1,9 @@
+{
+  "origins": [
+    "*://api.trakt.tv/*",
+    "*://radon.browser.local/*"
+  ],
+  "permissions": [
+    "webRequest"
+  ]
+}

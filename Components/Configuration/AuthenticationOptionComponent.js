@@ -1,8 +1,10 @@
+import Browser from 'wes/core/environment';
 import IsNil from 'lodash-es/isNil';
 import React from 'react';
 import Runtime from 'wes/runtime';
 import Uuid from 'uuid';
 
+import Messaging from 'neon-extension-framework/Messaging';
 import Registry from 'neon-extension-framework/Core/Registry';
 import TranslationNamespace from 'neon-extension-framework/Components/Translation/Namespace';
 import {OptionComponent} from 'neon-extension-framework/Components/Configuration';
@@ -29,7 +31,8 @@ export default class AuthenticationOptionComponent extends OptionComponent {
             namespaces: [],
 
             authenticated: false,
-            subscribed: false,
+            ready: false,
+
             account: {}
         };
     }
@@ -46,11 +49,16 @@ export default class AuthenticationOptionComponent extends OptionComponent {
         // Retrieve messaging service
         this.messaging = Plugin.messaging.service('authentication');
 
-        // Subscribe to service
-        this.messaging.subscribe().then(
-            () => this.setState({ subscribed: true }),
-            () => this.setState({ subscribed: false })
-        );
+        // Prepare authentication
+        this.prepare().then(() => {
+            // Update state
+            this.setState({ ready: true });
+        }, (err) => {
+            Log.error(`Unable to prepare authentication: ${err}`);
+
+            // Update state
+            this.setState({ ready: false });
+        });
 
         // Fetch initial state
         this.refresh(this.props);
@@ -58,6 +66,19 @@ export default class AuthenticationOptionComponent extends OptionComponent {
 
     componentWillReceiveProps(nextProps) {
         this.refresh(nextProps);
+    }
+
+    prepare() {
+        // Subscribe to service
+        return this.messaging.subscribe().then(() => {
+            // Ensure we are listening for callback requests (Firefox)
+            if(Browser.name === 'firefox') {
+                return Messaging.service('neon-extension', 'callback').request('listen');
+            }
+
+            // Not required on other browsers
+            return Promise.resolve();
+        });
     }
 
     onLoginClicked(t) {
@@ -68,9 +89,16 @@ export default class AuthenticationOptionComponent extends OptionComponent {
         this.callbackId = Uuid.v4();
 
         // Generate callback url
-        this.callbackUrl = Runtime.getURL(
-            '/Modules/neon-extension-destination-trakt/Callback.html?id=' + this.callbackId
-        );
+        if(Browser.name === 'firefox') {
+            this.callbackUrl = (
+                'https://radon.browser.local' +
+                '/Modules/neon-extension-destination-trakt/Callback.html?id=' + this.callbackId
+            );
+        } else {
+            this.callbackUrl = Runtime.getURL(
+                '/Modules/neon-extension-destination-trakt/Callback.html?id=' + this.callbackId
+            );
+        }
 
         // Open authorization page
         window.open(Client['oauth'].authorizeUrl(this.callbackUrl), '_blank');
@@ -226,7 +254,7 @@ export default class AuthenticationOptionComponent extends OptionComponent {
                             <button
                                 type="button"
                                 className="button small"
-                                disabled={!this.state.subscribed}
+                                disabled={!this.state.ready}
                                 onClick={this.onLoginClicked.bind(this, t)}>
                                 {t(`${this.props.item.key}.button.login`)}
                             </button>
