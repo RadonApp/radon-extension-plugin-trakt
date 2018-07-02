@@ -49,17 +49,6 @@ export default class AuthenticationOptionComponent extends OptionComponent {
         // Retrieve messaging service
         this.messaging = Plugin.messaging.service('authentication');
 
-        // Prepare authentication
-        this.prepare().then(() => {
-            // Update state
-            this.setState({ ready: true });
-        }, (err) => {
-            Log.error(`Unable to prepare authentication: ${err}`);
-
-            // Update state
-            this.setState({ ready: false });
-        });
-
         // Fetch initial state
         this.refresh(this.props);
     }
@@ -68,18 +57,96 @@ export default class AuthenticationOptionComponent extends OptionComponent {
         this.refresh(nextProps);
     }
 
-    prepare() {
-        // Subscribe to service
-        return this.messaging.subscribe().then(() => {
-            // Ensure we are listening for callback requests (Firefox)
-            if(Browser.name === 'firefox') {
-                return Messaging.service('neon-extension', 'callback').request('listen');
-            }
+    // region Public Methods
 
-            // Not required on other browsers
-            return Promise.resolve();
+    listen() {
+        // Listen for callback requests (on Firefox)
+        if(Browser.name === 'firefox') {
+            return Messaging.service('neon-extension', 'callback').request('listen');
+        }
+
+        // Not required on other browsers
+        return Promise.resolve();
+    }
+
+    logout() {
+        // Clear token and account details from storage
+        return Plugin.storage.put('session', null)
+            .then(() => Plugin.storage.put('account', null))
+            .then(() => {
+                // Update state
+                this.setState({
+                    authenticated: false,
+                    account: {}
+                });
+            });
+    }
+
+    refresh(props) {
+        this.setState({
+            id: props.item.id,
+
+            namespaces: [
+                props.item.namespace,
+                props.item.plugin.namespace
+            ]
+        });
+
+        // Retrieve account details
+        Plugin.storage.getObject('account')
+            .then((account) => {
+                if(IsNil(account)) {
+                    return;
+                }
+
+                this.setState({
+                    authenticated: true,
+                    account: account
+                });
+            });
+
+        // Subscribe to service
+        this.messaging.subscribe().then(() =>
+            // Start listening for callback requests
+            this.listen().then((success) => {
+                // Update state
+                this.setState({ ready: success });
+            }, (err) => {
+                Log.warn(`Unable to listen for callback requests: ${err}`);
+
+                // Update state
+                this.setState({ ready: false });
+            })
+        );
+    }
+
+    refreshAccount() {
+        // Fetch account settings
+        return Client['users']['settings'].get().then((account) => {
+            // Update state
+            this.setState({
+                authenticated: true,
+                account: account
+            });
+
+            // Update account settings
+            Plugin.storage.putObject('account', account);
+
+            return account;
+        }, (body, statusCode) => {
+            // Clear authorization
+            return this.logout().then(() => {
+                // Reject promise
+                return Promise.reject(new Error(
+                    `Unable to retrieve account settings, response with status code ${statusCode} returned`
+                ));
+            });
         });
     }
+
+    // endregion
+
+    // region Event Handlers
 
     onLoginClicked(t) {
         // Bind to callback event
@@ -121,7 +188,7 @@ export default class AuthenticationOptionComponent extends OptionComponent {
         Client['oauth'].exchange(query.code, this.callbackUrl).then((session) => {
             // Update authorization token
             return Plugin.storage.putObject('session', session)
-                // Refresh account details
+            // Refresh account details
                 .then(() => this.refreshAccount())
                 .then(() => {
                     // Emit success event
@@ -139,66 +206,7 @@ export default class AuthenticationOptionComponent extends OptionComponent {
         });
     }
 
-    refresh(props) {
-        this.setState({
-            id: props.item.id,
-
-            namespaces: [
-                props.item.namespace,
-                props.item.plugin.namespace
-            ]
-        });
-
-        // Retrieve account details
-        Plugin.storage.getObject('account')
-            .then((account) => {
-                if(IsNil(account)) {
-                    return;
-                }
-
-                this.setState({
-                    authenticated: true,
-                    account: account
-                });
-            });
-    }
-
-    refreshAccount() {
-        // Fetch account settings
-        return Client['users']['settings'].get().then((account) => {
-            // Update state
-            this.setState({
-                authenticated: true,
-                account: account
-            });
-
-            // Update account settings
-            Plugin.storage.putObject('account', account);
-
-            return account;
-        }, (body, statusCode) => {
-            // Clear authorization
-            return this.logout().then(() => {
-                // Reject promise
-                return Promise.reject(new Error(
-                    `Unable to retrieve account settings, response with status code ${statusCode} returned`
-                ));
-            });
-        });
-    }
-
-    logout() {
-        // Clear token and account details from storage
-        return Plugin.storage.put('session', null)
-            .then(() => Plugin.storage.put('account', null))
-            .then(() => {
-                // Update state
-                this.setState({
-                    authenticated: false,
-                    account: {}
-                });
-            });
-    }
+    // endregion
 
     render() {
         if(this.state.authenticated) {
