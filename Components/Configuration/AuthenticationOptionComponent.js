@@ -4,11 +4,11 @@ import React from 'react';
 import Runtime from 'wes/runtime';
 import Uuid from 'uuid';
 
-import Messaging from 'neon-extension-framework/Messaging';
-import Registry from 'neon-extension-framework/Core/Registry';
-import TranslationNamespace from 'neon-extension-framework/Components/Translation/Namespace';
-import {OptionComponent} from 'neon-extension-framework/Components/Configuration';
-import {toCssUrl} from 'neon-extension-framework/Utilities/Css';
+import Messaging from '@radon-extension/framework/Messaging';
+import Registry from '@radon-extension/framework/Core/Registry';
+import TranslationNamespace from '@radon-extension/framework/Components/Translation/Namespace';
+import {OptionComponent} from '@radon-extension/framework/Components/Configuration';
+import {toCssUrl} from '@radon-extension/framework/Utilities/Css';
 
 import Client from '../../Api/Client';
 import Log from '../../Core/Logger';

@@ -1,7 +1,7 @@
-import ScrobbleService from 'neon-extension-framework/Services/Destination/Scrobble';
-import Registry from 'neon-extension-framework/Core/Registry';
-import {MediaTypes} from 'neon-extension-framework/Core/Enums';
-import {round} from 'neon-extension-framework/Utilities/Value';
+import ScrobbleService from '@radon-extension/framework/Services/Destination/Scrobble';
+import Registry from '@radon-extension/framework/Core/Registry';
+import {MediaTypes} from '@radon-extension/framework/Core/Enums';
+import {round} from '@radon-extension/framework/Utilities/Value';
 
 import Client from '../Api/Client';
 import Log from '../Core/Logger';

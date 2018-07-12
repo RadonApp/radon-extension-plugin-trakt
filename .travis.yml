@@ -3,7 +3,7 @@ node_js:
 - '7'
 before_install:
 - npm install -g npm@'^5.10.0'
-- npm install -g NeApp/neon-extension-build#$TRAVIS_BRANCH || npm install -g NeApp/neon-extension-build#develop
+- npm install -g RadonApp/radon-extension-build#$TRAVIS_BRANCH || npm install -g RadonApp/radon-extension-build#develop
 install:
 - neb travis:install $TRAVIS_BRANCH
 - neb package:validate
@@ -21,5 +21,5 @@ deploy:
   api_key:
     secure: SxPTvt9ox3AMy1B8r5DOeP3DJ65h4t63LYaNlsoLTFwaRxJnBUshppowChokYeZN/Rtgu6k2nheNUSnfvg3C78wUqlZ+efc7lZypStf/j1LJQXjKpszbhi/KvvDEONrTNRPAIa4QyoNPl/j2Jtd14hhxztJtAVQEzvAJAXMLI7OlwafJtcpXHAeLT1YY+ni/ZFvRBBfpfJBrreZreAqJ4Pn3brYf+m55HInyZGQDiT7zmtb0oJR4QiQBeZFErGRPg0HUGrzF8FBtQu32VsUZZ+8uMktUF8IIKJoe9M+Qv5G67W3OvEBhSxWwfgnUJuszMZVlNOdcLgpJf3KnlTDnFuPvCTlwt9HvwvzuOIeX6cHj6mETbCKqYVcRH9LTYXGuH34eQNZqbpErBJfnsowLNW6CzJc9TNSFLNUE9gY0bLZb5gQHpyETanralS+53fmk16px7Y8CWqKWRfqDJurrPnJTX0QVvVoWK5JCwIj/VbREWXZsokx24qF63S/RiCwpHiHzkdLsAxUKcfqGcWyAIK91kuJF5i54USGq0WljSwBl4vDZWM846BdkfzC343RrFdj1gCdgUSN4myB2hezasTI3PbRIgz4TORJ+AvXZQxR0V47mvlR743t0LHrq/A51BzcoH+GLQ6DzAOxmRMhe+7eSrxCIKkvtrZO/he+gsas=
   on:
-    repo: NeApp/neon-extension-destination-trakt
+    repo: RadonApp/radon-extension-plugin-trakt
     tags: true
