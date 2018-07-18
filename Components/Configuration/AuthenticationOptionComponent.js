@@ -66,7 +66,7 @@ export default class AuthenticationOptionComponent extends OptionComponent {
         }
 
         // Not required on other browsers
-        return Promise.resolve();
+        return Promise.resolve(true);
     }
 
     logout() {
