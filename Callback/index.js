@@ -118,7 +118,7 @@ import Plugin from '../Core/Plugin';
         document.title = t('title');
 
         // Refresh page if the extension identifier is not available
-        if(IsNil(Runtime.id)) {
+        if(!Runtime.$has('id') || IsNil(Runtime.id)) {
             refresh();
             return;
         }
