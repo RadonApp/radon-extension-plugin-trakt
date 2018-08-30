@@ -159,11 +159,11 @@ export default class AuthenticationOptionComponent extends OptionComponent {
         if(Browser.name === 'firefox') {
             this.callbackUrl = (
                 'https://radon.browser.local' +
-                '/Modules/neon-extension-destination-trakt/Callback.html?id=' + this.callbackId
+                '/Plugins/trakt/Callback.html?id=' + this.callbackId
             );
         } else {
             this.callbackUrl = Runtime.getURL(
-                '/Modules/neon-extension-destination-trakt/Callback.html?id=' + this.callbackId
+                '/Plugins/trakt/Callback.html?id=' + this.callbackId
             );
         }
 

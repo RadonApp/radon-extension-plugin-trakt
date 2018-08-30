@@ -9,7 +9,7 @@
     "Destination:Scrobble"
   ],
   "web_accessible_resources": [
-    "Modules/neon-extension-destination-trakt/Callback.html"
+    "Plugins/trakt/Callback.html"
   ],
   "webpack": {
     "babel": [
